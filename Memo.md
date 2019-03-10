@@ -1,20 +1,31 @@
 # Memo
 
-# Git Author/Committer設定
+# VSCodeでmdプレビュー
+### サイドバイサイド
+- Win
+［Ctrl］＋［K］→［V］
 
-## Git全体設定
-git config --global user.name "osugizmo"
-git config --global user.email "osugizmo@email.local"
+- Mac
+［Command］＋［K］→［V］
 
-## プロジェクトローカル設定
-git config --local user.name "osugizmo"
-git config --local user.email "osugizmo@email.local"
+### 別タブ
+- Win
+ ［Ctrl］＋［Shift］＋［V］
 
+- Mac
+［Shift］＋［Command］＋［V］
 
-# Git Editor設定(vimに設定)
-git config --global core.editor 'vim -c "set fenc=utf-8"'
+# Git コマンドチートシート(個々の内容は下方に記載)
 
+## ログを見やすくする
+```bash
+git log --graph --all --format="%x09%an%x09%h %d %s"
+```
 
+## 以下を実行すると「git tree」で表示できる
+```bash
+git config --global alias.tree 'log --graph --all --format="%x09%C(cyan bold)%an%Creset%x09%C(yellow)%h%Creset %C(magenta reverse)%d%Creset %s"'
+```
 
 # プレフィックス
 
@@ -219,5 +230,249 @@ refs #1 変更した理由（内容、詳細）
 - Improve documentation of `ses.cookies.set()`
 - Improve readability in CSRF section of guide
 - Improve spec description
+
+
+# Git設定
+
+### Git ユーザー設定 グローバル
+```bash
+git config --global user.name "osugizmo"
+git config --global user.email "osugizmo@email.local"
+```
+
+### Git ユーザー設定 プロジェクトローカル
+```bash
+git config --local user.name "osugizmo"
+git config --local user.email "osugizmo@email.local"
+```
+
+### Git Editor設定(vimに設定)
+```bash
+git config --global core.editor 'vim -c "set fenc=utf-8"'
+```
+
+### リポジトリ作成後リモートへプッシュ
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/osugizmo/project-name.git
+git push -u origin master
+```
+
+### クローン
+```bash
+git clone https://github.com/osugizmo/project-name.git
+```
+
+### リモートから変更取得
+```bash
+git pull
+```
+or
+```bash
+git fetch
+git merge origin/master
+```
+
+### Git Commiter変更
+```bash
+git commit --amend
+```
+
+### Git Author 変更
+```bash
+git commit --amend --author="osugizmo <osugizmo@email.local>"
+git rebase --continue
+git log --pretty=full
+git push origin HEAD    #Push済ならgit push -f origin HEAD
+```
+
+### ファイルの登録(ステージング)
+```bash
+git add <ファイル名>
+```
+
+### ファイルの変更や追加をコミット
+```bash
+git commit -m "コミットメッセージ"
+```
+
+### ローカルの変更を確認する
+```bash
+git status
+```
+### リモートとローカルのファイルの差分を抽出する
+```bash
+git diff <ファイル名>
+```
+
+### commitの変更履歴をみる
+```bash
+git log
+```
+
+### 指定したcommitの変更点を見る
+```bash
+git show <コミットのハッシュ値>
+```
+
+### リモートにプッシュ
+```bash
+git push origin <ブランチ名>
+```
+
+### addの取り消し
+```bash
+git reset HEAD <ファイル名>
+```
+
+### commitの取り消し
+```bash
+git reset --hard HEAD^
+```
+--hard：コミット取り消し＋ワークディレクトリの内容も変更
+--soft：コミットのみを取り消し
+HEAD^：直前のコミット
+HEAD~{n} ：n個前のコミット
+
+### commitの打ち消し
+```bash
+git revert <コミットのハッシュ値>
+```
+
+### コミットメッセージの修正
+```bash
+git commit --amend "新しいコミットメッセージ"
+```
+### pushの取り消し
+```bash
+git reset --hard <戻したいコミットのハッシュ値>
+git push -f
+```
+
+### ローカルでブランチを作成
+```bash
+git branch <ブランチ名>
+```
+
+### ローカルでブランチを切り替え
+```bash
+git checkout <ブランチ名>
+```
+
+### ブランチ作成 & 切り替え
+```bash
+git branch -b <ブランチ名>
+```
+
+### ブランチ名の変更
+```bash
+git branch -m <古いブランチ名> <新しいブランチ名>
+```
+
+### ブランチの削除
+```bash
+git branch -d <ブランチ名>
+```
+
+### ローカルのブランチをリモートに反映
+```bash
+git push -u origin <ローカルのブランチ名>
+```
+
+### リモートのブランチをローカル持ってくる
+```bash
+git branch <ブランチ名> origin/<ブランチ名>
+```
+
+### リモートのブランチをローカル持ってくる & 切り替え
+```bash
+git checkout -b <ブランチ名> origin/<ブランチ名>
+```
+
+### 全てのブランチを確認する
+```bash
+git branch -a
+```
+
+### ブランチを比較する
+```bash
+git diff <ブランチ名> <ブランチ名>
+```
+
+### ブランチをマージする
+```bash
+git merge <ブランチ名>
+```
+
+### fast-forwardの関係であっても必ずマージコミットを作る
+
+```bash
+git merge --no-ff <ブランチ名>
+```
+※ mergeの場合は分岐元で実行する為
+
+### ブランチをリベースする
+```bash
+git rebase <ブランチ名>
+```
+※ rebaseの場合は分岐先のブランチで実行
+
+### 変更点を一旦退避させる
+```bash
+git stash save
+```
+
+### 退避した作業の一覧を見る
+```bash
+git stash list
+```
+
+### 退避した作業を戻す
+```bash
+git stash apply <stash名>
+```
+
+### 退避した作業を消す
+```bash
+git stash drop <stash名>
+```
+
+### 退避した作業をすべて消す
+
+```bash
+git stash clear
+```
+
+### ファイル削除
+```bash
+git rm -f  <ファイル名>
+```
+
+### ファイルリネーム
+```bash
+git mv <元のファイル名> <変えたいファイル名>
+```
+
+### ファイルを最新のコミットの状態に戻す
+```bash
+git checkout HEAD <ファイル名>
+```
+
+### ファイルを指定コミットまで戻す
+```bash
+git checkout <コミットのハッシュ値> <ファイル名>
+```
+
+### .gitignore を無視して追加する
+```bash
+git add -f <ファイル名>
+```
+
+### ディレクトリだけ登録(.gitkeepをディレクトリに作成する)
+```bash
+touch <ディレクトリ名>/.gitkeep
+
 
 
